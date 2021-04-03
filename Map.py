@@ -68,10 +68,16 @@ class Field:
             raise Exception("Ошибка")
 
     def dig(self):
+        damage = sum([unit.dig_power for unit in self.__units])
+        self.health -= damage
+        if self.health <= 0:
+            self.dig_out()
+
+    def dig_out(self):
         if FieldTypes.TUNNEL == self.type:
             self.type = random.choice(list(set(get_field_types()) - {FieldTypes.TUNNEL}))
         elif FieldTypes.WATER == self.type:
-            self.type = FieldTypes.OIL
+            self.type = FieldTypes.SOIL
         else:
             self.type = FieldTypes.TUNNEL
 
