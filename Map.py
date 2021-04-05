@@ -8,7 +8,26 @@ def get_field_types():
 class Board:
     def __init__(self, board_size=(0, 0)):
         self.size = board_size
-        self._fields = [[]]
+        self._fields = [[Field()]]
+
+    def get_field(self, position):
+        return self._fields[position[1]][position[0]]
+
+    def add_unit(self, unit, position):
+        field = self.get_field(position)
+        field.add_unit(unit)
+
+    def remove_unit(self, unit):
+        field = self.get_field(unit.position)
+        field.remove_unit(unit)
+
+    def move_unit(self, unit, new_position):
+        if unit.is_can_move(new_position):
+            new_field = self.get_field(new_position)
+            old_field = self.get_field(unit.position)
+            if not new_field.is_busy():
+                old_field.remove_unit(unit)
+                new_field.add_unit(unit)
 
     @staticmethod
     def get_random(board_size):
