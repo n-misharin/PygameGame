@@ -2,6 +2,7 @@ import graphics
 import pygame
 import pygame_gui
 from Map import Board, FieldTypes
+from GUI import UnitInfoPanel
 
 
 def board_draw(_board: Board):
@@ -36,26 +37,14 @@ def board_draw(_board: Board):
 
 
 if __name__ == '__main__':
-
-    window_surface = pygame.display.set_mode(graphics.size)
-    manager = pygame_gui.UIManager(graphics.size)
-
-    hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-                                                text='Say Hello',
-                                                manager=manager)
-    unit_panel = pygame_gui.elements.UIPanel(relative_rect=pygame.Rect((600, 0), (200, 200)),
-                                             manager=manager,
-                                             starting_layer_height=1)
-    unit_type_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((650, 30), (50, 60)),
-                                                  manager=manager, parent_element=unit_panel,
-                                                  text="LOL")
-
     board = Board.get_random((10, 10))
 
     clock = pygame.time.Clock()
     running = True
 
-    count = 0
+    window_surface = pygame.display.set_mode(graphics.size)
+    manager = pygame_gui.UIManager(graphics.size)
+    panel = UnitInfoPanel(manager=manager)
 
     while running:
         delta_time = clock.tick(60) / 1000
@@ -63,15 +52,15 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == hello_button:
-                        print('Hello World!')
+            # if event.type == pygame.USEREVENT:
+            #     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+            #         if event.ui_element == hello_button:
+            #             print('Hello World!')
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                count += 1
-                print(count)
-                unit_type_label.set_text(str(count))
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     count += 1
+            #     print(count)
+            #     unit_type_label.set_text(str(count))
 
             manager.process_events(event)
 
