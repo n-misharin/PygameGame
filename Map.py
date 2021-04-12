@@ -8,10 +8,10 @@ def get_field_types():
 class Board:
     def __init__(self, board_size=(0, 0)):
         self.size = board_size
-        self._fields = [[Field()]]
+        self.fields = [[Field()]]
 
     def get_field(self, position):
-        return self._fields[position[1]][position[0]]
+        return self.fields[position[1]][position[0]]
 
     def add_unit(self, unit, position):
         field = self.get_field(position)
@@ -32,12 +32,12 @@ class Board:
     @staticmethod
     def get_random(board_size):
         board = Board(board_size=board_size)
-        board._fields = [[Field.get_random() for x in range(board_size[0])] for y in range(board_size[1])]
+        board.fields = [[Field.get_random() for x in range(board_size[0])] for y in range(board_size[1])]
         return board
 
     def __str__(self):
         lines = []
-        for line in self._fields:
+        for line in self.fields:
             res = []
             for field in line:
                 res.append(str(field))
