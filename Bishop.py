@@ -1,4 +1,4 @@
-class Knight:
+class Queen:
 
     def __init__(self, row, col, color):
         self.row = row
@@ -10,7 +10,7 @@ class Knight:
         self.col = col
 
     def char(self):
-        return 'N'
+        return 'Q'
 
     def get_color(self):
         return self.color
@@ -20,7 +20,6 @@ class Knight:
         col_dist = abs(self.col - col)
         if row < 0 or col < 0 or row > 7 or col > 7:
             return False
-        if row_dist == 2 and col_dist == 1 or row_dist == 1 and col_dist == 2:
+        if row_dist == col_dist or row == self.row or col == self.col:
             return True
         return False
-

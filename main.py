@@ -4,9 +4,11 @@ import pygame_gui
 from Map import Board, FieldTypes
 from GUI import UnitInfoPanel
 
+TILE_SIZE = 50
+
 
 def board_draw(_board: Board):
-    tile_size = 50
+    tile_size = TILE_SIZE
     board_sprites = graphics.SpriteGroup()
     for j in range(len(_board._fields)):
         line = _board._fields[j]
@@ -44,7 +46,7 @@ if __name__ == '__main__':
 
     window_surface = pygame.display.set_mode(graphics.size)
     manager = pygame_gui.UIManager(graphics.size)
-    panel = UnitInfoPanel(manager=manager)
+    panel = UnitInfoPanel(manager=manager, position=(0, 0))
 
     while running:
         delta_time = clock.tick(60) / 1000
@@ -57,16 +59,13 @@ if __name__ == '__main__':
             #         if event.ui_element == hello_button:
             #             print('Hello World!')
 
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            #     count += 1
-            #     print(count)
-            #     unit_type_label.set_text(str(count))
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                panel.set_unit_parameters(["1", "2", "3"])
 
             manager.process_events(event)
 
         manager.update(delta_time)
         board_draw(board)
         manager.draw_ui(window_surface)
-
         pygame.display.flip()
     pygame.quit()
