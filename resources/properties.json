@@ -1,0 +1,221 @@
+{
+  "resources": [
+    {
+      "name": "fuel",
+      "type": 0,
+      "visible_name": "Топливо",
+      "start_count": 30
+    },
+    {
+      "name": "gold",
+      "type": 1,
+      "visible_name": "Золото",
+      "start_count": 100
+    },
+    {
+      "name": "diamond",
+      "type": 2,
+      "visible_name": "Алмазы",
+      "start_count": 0
+    }
+  ],
+  "units": [
+    {
+      "name": "worker",
+      "type": 0,
+      "visible_name": "Рабочий",
+      "max_health": 100,
+      "attack": 10,
+      "attack_radius": 0,
+      "max_capacity": 10,
+      "speed": 3,
+      "start_count": 3,
+      "cost": 40,
+      "sprite": {
+        "name": null,
+        "size": [94, 94],
+        "pos": [0, 0]
+      }
+    },
+    {
+      "name": "transport",
+      "type": 1,
+      "visible_name": "Рабочий",
+      "max_health": 100,
+      "attack": 10,
+      "attack_radius": 0,
+      "max_capacity": 100,
+      "speed": 5,
+      "start_count": 0,
+      "cost": 50,
+      "sprite": {
+        "name": null,
+        "size": [94, 94],
+        "pos": [0, 0]
+      }
+    },
+    {
+      "name": "kamikaze",
+      "type": 2,
+      "visible_name": "Камикадзе",
+      "max_health": 100,
+      "attack": 100,
+      "attack_radius": 3,
+      "max_capacity": 0,
+      "speed": 3,
+      "start_count": 0,
+      "cost": 30,
+      "sprite": {
+        "name": null,
+        "size": [94, 94],
+        "pos": [0, 0]
+      }
+    },
+    {
+      "name": "guardian",
+      "type": 3,
+      "visible_name": "Защитник",
+      "max_health": 10,
+      "attack": 3,
+      "attack_radius": 3,
+      "max_capacity": 0,
+      "speed": 5,
+      "start_count": 0,
+      "cost": 60,
+      "sprite": {
+        "name": null,
+        "size": [94, 94],
+        "pos": [0, 0]
+      }
+    }
+  ],
+  "grounds": [
+    {
+      "name": "soil",
+      "visible_name": "Грязь",
+      "type": 0,
+      "max_health": 30,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker"],
+      "resource_type": null,
+      "resources_per_step": 0,
+      "frequency_of_occurrence": 100,
+      "is_auto_generated": true,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [0, 1]
+      }
+    },
+    {
+      "name": "fuel",
+      "visible_name": "Энергитическая руда",
+      "type": 1,
+      "max_health": 50,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker"],
+      "resource_type": 0,
+      "resources_per_step": 10,
+      "frequency_of_occurrence": 20,
+      "is_auto_generated": true,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [0, 0]
+      }
+    },
+    {
+      "name": "gold",
+      "visible_name": "Золото",
+      "type": 2,
+      "max_health": 100,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker"],
+      "resource_type": 1,
+      "resources_per_step": 10,
+      "frequency_of_occurrence": 20,
+      "is_auto_generated": true,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [0, 2]
+      }
+    },
+    {
+      "name": "diamond",
+      "visible_name": "Алмазы",
+      "type": 3,
+      "max_health": 100,
+      "max_units_count": 3,
+      "allowed_unit_types": ["transport"],
+      "resource_type": 2,
+      "resources_per_step": 10,
+      "frequency_of_occurrence": 10,
+      "is_auto_generated": true,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [0, 4]
+      }
+    },
+    {
+      "name": "lava",
+      "visible_name": "Лава",
+      "type": 4,
+      "max_health": 10,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker"],
+      "resource_type": null,
+      "resources_per_step": 0,
+      "frequency_of_occurrence": 40,
+      "is_auto_generated": true,
+      "next_ground": 0,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [0, 3]
+      }
+    },
+    {
+      "name": "stone",
+      "visible_name": "Камень",
+      "type": 5,
+      "max_health": 100,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker"],
+      "resource_type": null,
+      "resources_per_step": 0,
+      "frequency_of_occurrence": 40,
+      "is_auto_generated": true,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [1, 1]
+      }
+    },
+    {
+      "name": "tunnel",
+      "visible_name": "Туннель",
+      "type": 6,
+      "max_health": 100,
+      "max_units_count": 3,
+      "allowed_unit_types": ["worker", "transport", "kamikaze", "guardian"],
+      "resource_type": null,
+      "resources_per_step": 0,
+      "frequency_of_occurrence": 0,
+      "is_auto_generated": false,
+      "next_ground": null,
+      "sprite": {
+        "name": "ground_spritesheet.png",
+        "size": [94, 94],
+        "pos": [1, 2]
+      }
+    }
+  ]
+
+}

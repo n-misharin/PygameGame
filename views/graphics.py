@@ -1,22 +1,35 @@
 import pygame
 import os
 
-pygame.init()
 
-pygame.display.set_caption("Game")
+SCREEN_SIZE = (1152, 720)
+IMAGE_FOLDER_PATH = "images"
 
-size = width, height = 1152, 720
-screen = pygame.display.set_mode(size)
 
-background = pygame.Surface(size)
-background.fill(pygame.Color('#000000'))
+class Screen:
+    CAPTION = "Diggers"
+    BG_COLOR = (0, 0, 0)
+
+    def __init__(self, screen_size):
+        pygame.init()
+
+        pygame.display.set_caption(self.CAPTION)
+
+        self.size = self.width, self.height = screen_size
+        self.screen = pygame.display.set_mode(self.size)
+
+        background = pygame.Surface(self.size)
+        background.fill(pygame.Color(self.BG_COLOR))
+
+
+window = Screen(SCREEN_SIZE)
 
 
 class ImageHandler:
 
     DEFAULT_COLORKEY = -1
 
-    def __init__(self, path="images"):
+    def __init__(self, path=IMAGE_FOLDER_PATH):
         self.path = path
 
     def load_image(self, image_name, colorkey=None):
@@ -75,4 +88,12 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
 class SpriteGroup(pygame.sprite.Group):
     def draw_on_screen(self):
-        self.draw(screen)
+        self.draw(window.screen)
+
+
+class Sprite(pygame.sprite.Sprite):
+    pass
+
+
+class Rect(pygame.Rect):
+    pass

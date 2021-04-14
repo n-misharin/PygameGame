@@ -35,16 +35,6 @@ class Board:
         board.fields = [[Field.get_random() for x in range(board_size[0])] for y in range(board_size[1])]
         return board
 
-    def __str__(self):
-        lines = []
-        for line in self.fields:
-            res = []
-            for field in line:
-                res.append(str(field))
-
-            lines.append(' '.join(res))
-        return '\n'.join(lines)
-
 
 class ResourceTypes:
     GOLD = 0
@@ -66,8 +56,15 @@ class Field:
     MAX_UNIT_COUNT = 3
 
     def __init__(self, field_type=FieldTypes.SOIL):
-        self.type = field_type
         self.__units = list()
+        self.type = None
+        self.property = None
+        self.health = None
+
+        self.init(field_type)
+
+    def init(self, field_type):
+        self.type = field_type
         self.property = FieldsProperties[self.type]
         self.health = self.property.max_health
 
@@ -86,26 +83,28 @@ class Field:
         else:
             raise Exception("Ошибка")
 
-    def dig(self):
-        damage = sum([unit.dig_power for unit in self.__units])
+    def dig(self, current_player):
+        damage = sum(
+            [unit.dig_power for unit in self.__units if current_player is not None and unit.player == current_player])
         self.health -= damage
         if self.health <= 0:
             self.dig_out()
 
+    def refresh(self, current_player):
+        if len(self.__units) > 0:
+            self.dig(current_player)
+
     def dig_out(self):
+        new_type = FieldTypes.TUNNEL
         if FieldTypes.TUNNEL == self.type:
-            self.type = random.choice(list(set(get_field_types()) - {FieldTypes.TUNNEL}))
+            new_type = random.choice(list(set(get_field_types()) - {FieldTypes.TUNNEL}))
         elif FieldTypes.WATER == self.type:
-            self.type = FieldTypes.SOIL
-        else:
-            self.type = FieldTypes.TUNNEL
+            new_type = FieldTypes.SOIL
+        self.init(new_type)
 
     @staticmethod
     def get_random():
         return Field(field_type=random.choice(get_field_types()))
-
-    def __str__(self):
-        return str(self.type)
 
 
 class FieldProperty:

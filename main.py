@@ -1,7 +1,7 @@
-import graphics
+from views import graphics
 import pygame
 import pygame_gui
-from Map import Board, FieldTypes, Field
+from board import Board, FieldTypes
 from GUI import UnitInfoPanel
 from camera import Camera
 
