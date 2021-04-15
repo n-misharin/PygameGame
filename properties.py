@@ -1,7 +1,10 @@
 import json
 import os
 
-with open(os.path.join('../resources', 'properties.json'), encoding='utf-8') as base_data:
+file_name = os.path.join("", "resources", "properties.json") \
+    if __name__ == '__main__' else os.path.join("resources", "properties.json")
+
+with open(file_name, encoding='utf-8') as base_data:
     data = json.load(base_data)
 
 RESOURCES = data['resources']

@@ -6,6 +6,14 @@ SCREEN_SIZE = (1152, 720)
 IMAGE_FOLDER_PATH = "images"
 
 
+def is_point_in_rect(rect: pygame.Rect, point: tuple):
+    return rect.left < point[0] < rect.right and rect.top < point[1] < rect.bottom
+
+
+def is_rect_in_rect(rect1: pygame.Rect, rect2: pygame.Rect):
+    return is_point_in_rect(rect1, rect2.topleft) and is_point_in_rect(rect1, rect2.bottomright)
+
+
 class Screen:
     CAPTION = "Diggers"
     BG_COLOR = (0, 0, 0)
@@ -91,9 +99,4 @@ class SpriteGroup(pygame.sprite.Group):
         self.draw(window.screen)
 
 
-class Sprite(pygame.sprite.Sprite):
-    pass
 
-
-class Rect(pygame.Rect):
-    pass

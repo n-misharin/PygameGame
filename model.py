@@ -1,4 +1,5 @@
-from models import properties
+import properties
+import views
 
 RESOURCE_FUEL = 0
 RESOURCE_GOLD = 1
@@ -25,13 +26,14 @@ class Unit:
         self.current_speed = properties.UNITS[self.type]["speed"]
         self.health = properties.UNITS[self.type]["max_health"]
         self.player = player
+        self.view = views.UnitView(self)
 
     def is_can_move(self, new_position):
         return abs(new_position[0] - self.position[0]) + abs(
             new_position[1] - self.position[1]) == 1 and self.current_speed > 0
 
-    def move(self, new_position, board):
-        board.move_unit(self, new_position)
+    def move(self, new_position, game_board):
+        game_board.move_unit(self, new_position)
 
     def __str__(self):
         return str(self.type)
@@ -42,9 +44,10 @@ class Field:
         self.units = list()
         self.type = field_type
         self.health = properties.FIELDS[self.type]["max_health"]
+        self.view = views.FieldView(self)
 
     def is_busy(self):
-        return len(self.units) > properties.FIELDS[self.type]["max_unit_count"]
+        return len(self.units) > properties.FIELDS[self.type]["max_units_count"]
 
     def add_unit(self, unit):
         if self.is_busy():
@@ -77,6 +80,9 @@ class Field:
         else:
             new_type = properties.FIELDS[self.type]["next_ground"]
         self.type = new_type
+
+    def update(self, delta_time):
+        self.view.update(delta_time)
 
     @staticmethod
     def get_random():
@@ -111,9 +117,9 @@ class Board:
 
     @staticmethod
     def get_random(board_size):
-        board = Board(board_size=board_size)
-        board.fields = [[Field.get_random() for x in range(board_size[0])] for y in range(board_size[1])]
-        return board
+        board_board = Board(board_size=board_size)
+        board_board.fields = [[Field.get_random() for x in range(board_size[0])] for y in range(board_size[1])]
+        return board_board
 
 
 class Player:
@@ -149,6 +155,28 @@ class Player:
 
     def __str__(self):
         return self.resources.__str__() + '\n' + ' '.join([unit.__str__() for unit in self.units])
+
+
+class Game:
+    def __init__(self):
+        self.board = Board.get_random((10, 10))
+
+        self.board.fields[0][4].type = FIELD_TUNNEL
+        self.board.fields[0][5].type = FIELD_TUNNEL
+
+        self.board.fields[9][4].type = FIELD_TUNNEL
+        self.board.fields[9][5].type = FIELD_TUNNEL
+
+        self.players = [Player("nikita", 0, self.board, (0, 4)), Player("misharin", 1, self.board, (9, 5))]
+
+        self.cur_player = self.players[0]
+
+        for player in self.players:
+            for unit in player.units:
+                self.board.add_unit(unit, player.base_position)
+
+    def next_turn(self):
+        pass
 
 
 if __name__ == '__main__':

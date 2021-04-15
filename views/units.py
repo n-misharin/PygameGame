@@ -1,6 +1,3 @@
-from board import Board
-
-
 class UnitTypes:
     WORKER = 0
     TRANSPORT = 1
