@@ -7,7 +7,8 @@ IMAGE_FOLDER_PATH = "images"
 
 
 def is_point_in_rect(rect: pygame.Rect, point: tuple):
-    return rect.left < point[0] < rect.right and rect.top < point[1] < rect.bottom
+    #print("rect", rect.left, rect.right, rect.bottom, rect.top)
+    return rect.x < point[0] < rect.x + rect.width and rect.y < point[1] < rect.y + rect.height
 
 
 def is_rect_in_rect(rect1: pygame.Rect, rect2: pygame.Rect):
@@ -59,44 +60,10 @@ class ImageHandler:
         return image
 
 
-class AnimatedSprite(pygame.sprite.Sprite):
-
-    FRAME_DURATION = 1
-
-    def __init__(self, sheet, columns, rows, x, y):
-        super().__init__()
-        self.frames = []
-        self.cur_frame_time = 0
-        self.cut_sheet(sheet, columns, rows)
-        self.cur_frame_x = 0
-        self.cur_frame_y = 0
-        self.image = self.frames[self.cur_frame_y][self.cur_frame_y]
-        self.rect = self.rect.move(x, y)
-
-    def cut_sheet(self, sheet, columns, rows):
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns, sheet.get_height() // rows)
-
-        for j in range(rows):
-            self.frames.append([])
-            for i in range(columns):
-                frame_location = (self.rect.w * i, self.rect.h * j)
-                self.frames[j].append(sheet.subsurface(pygame.Rect(frame_location, self.rect.size)))
-
-    def update(self, delta_time=0.001):
-        self.cur_frame_time += delta_time
-        if self.cur_frame_time >= self.FRAME_DURATION:
-            self.cur_frame_time = 0
-            self.cur_frame_x = (self.cur_frame_x + 1) % len(self.frames[self.cur_frame_y])
-            self.image = self.frames[self.cur_frame_y][self.cur_frame_x]
-
-    def set_frame_y(self, y):
-        self.cur_frame_y = y
-        self.cur_frame_x = 0
-
-
 class SpriteGroup(pygame.sprite.Group):
     def draw_on_screen(self):
         self.draw(window.screen)
 
 
-
+if __name__ == '__main__':
+    pass

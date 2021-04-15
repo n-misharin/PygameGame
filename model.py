@@ -20,7 +20,7 @@ UNIT_GUARDIAN = 3
 
 
 class Unit:
-    def __init__(self, unit_type, position, player=None):
+    def __init__(self, unit_type, position=(0, 0), player=None):
         self.type = unit_type
         self.position = position
         self.current_speed = properties.UNITS[self.type]["speed"]
@@ -47,7 +47,7 @@ class Field:
         self.view = views.FieldView(self)
 
     def is_busy(self):
-        return len(self.units) > properties.FIELDS[self.type]["max_units_count"]
+        return len(self.units) >= properties.FIELDS[self.type]["max_units_count"]
 
     def add_unit(self, unit):
         if self.is_busy():
@@ -82,7 +82,8 @@ class Field:
         self.type = new_type
 
     def update(self, delta_time):
-        self.view.update(delta_time)
+        # self.view.update(delta_time)
+        pass
 
     @staticmethod
     def get_random():
