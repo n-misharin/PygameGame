@@ -64,6 +64,7 @@ class AnimatedSpriteView(SpriteView):
 
     def __init__(self, sheet, columns, rows, x, y):
         super().__init__()
+        self.animation_delta = 1
         self.frames = []
         self.cur_frame_time = 0
         self.cut_sheet(sheet, columns, rows)
@@ -83,7 +84,7 @@ class AnimatedSpriteView(SpriteView):
         self.cur_frame_time += delta_time
         if self.cur_frame_time >= self.FRAME_DURATION:
             self.cur_frame_time = 0
-            self.cur_frame_x = (self.cur_frame_x + 1) % len(self.frames[self.cur_frame_y])
+            self.cur_frame_x = (self.cur_frame_x + self.animation_delta) % len(self.frames[self.cur_frame_y])
             self.image = self.frames[self.cur_frame_y][self.cur_frame_x]
 
     def set_frame_y(self, y):
@@ -98,10 +99,21 @@ class UnitView(AnimatedSpriteView):
             properties.UNITS[unit.type]["sprite"]["column"],
             properties.UNITS[unit.type]["sprite"]["row"], 0, 0
         )
-
         self.unit = unit
-        self.image = UNITS_IMAGES[self.unit.type][unit.player.turn]
-        self.rect = self.image.get_rect()
+        self.frames.append([self.frames[1].pop(), self.frames[1].pop()])
+        self.do_animation_move()
+
+    def do_animation_move(self):
+        self.animation_delta = -1
+        self.cur_frame_y = 1
+
+    def do_animation_stay(self):
+        self.cur_frame_y = 2
+        self.animation_delta = 1
+
+    def do_animation_work(self):
+        self.cur_frame_y = 0
+        self.animation_delta = 1
 
     def update(self, delta_time, camera, mouse_down_pos):
         super().update(delta_time, camera, mouse_down_pos)
@@ -129,11 +141,10 @@ class FieldView(SpriteView):
                 self.field.view.rect.x + space_x,
                 self.field.view.rect.y + (x - 1) * space_y,
                 UNIT_TILE_SIZE, UNIT_TILE_SIZE)
-            self.sprite_group.add(unit.view)
 
     def update(self, delta_time, camera: Camera, mouse_down_pos):
-        self.image = FIELDS_IMAGES[self.field.type]
         camera.apply(self)
+        # self.refresh_unit_rect()
 
 
 class BoardView(SpriteView):
@@ -161,6 +172,11 @@ class BoardView(SpriteView):
                 for unit in self.board.fields[y][x].units:
                     self.board.fields[y][x].view.refresh_unit_rect()
                     self.sprite_group.add(unit.view)
+
+    def get_field(self, pos):
+        if not is_point_in_rect(self.rect, pos):
+            return None
+        return (pos[0] - self.rect.x) // GROUND_TILE_SIZE, (pos[1] - self.rect.y) // GROUND_TILE_SIZE
 
     def update(self, delta_time, camera: Camera, mouse_down_pos, mouse_key):
         self.sprite_group.update(delta_time, camera, mouse_down_pos)

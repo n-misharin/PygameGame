@@ -11,12 +11,15 @@ if __name__ == '__main__':
 
     b = Board.get_random((10, 10))
 
+    print(-10 % 3)
+
     pl1 = Player("Nik1", 0, b, (0, 4))
     pl2 = Player("Nik2", 1, b, (4, 9))
     pl3 = Player("Nik3", 2, b, (9, 5))
     pl4 = Player("Nik4", 3, b, (5, 0))
 
-    b.add_unit(Unit(0, player=pl1), (0, 0))
+    u = Unit(0, player=pl1)
+    b.add_unit(u, (0, 0))
     b.add_unit(Unit(0, player=pl1), (0, 0))
     b.add_unit(Unit(0, player=pl1), (0, 0))
     b.add_unit(Unit(0, player=pl4), (1, 0))
@@ -29,6 +32,7 @@ if __name__ == '__main__':
     b.add_unit(Unit(0, player=pl1), (7, 2))
     b.add_unit(Unit(0, player=pl3), (4, 5))
     b.add_unit(Unit(0, player=pl3), (4, 5))
+
     board = BoardView(b)
     camera = Camera()
 
@@ -36,6 +40,8 @@ if __name__ == '__main__':
     mouse_down_key = None
     mouse_pos = (0, 0)
     mouse_delta = (0, 0)
+
+    is_move = False
 
     while running:
         is_mouse_motion = False
@@ -45,6 +51,14 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_m:
+                    is_move = True
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_m:
+                    is_move = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 is_mouse_down = True
@@ -65,6 +79,8 @@ if __name__ == '__main__':
         else:
             camera.move((0, 0))
 
+        if is_move and is_mouse_down and mouse_down_key == pygame.BUTTON_LEFT and mouse_down_pos != (None, None):
+            board.board.move_unit(u, board.get_field(mouse_down_pos))
         board.update(delta_time, camera, mouse_down_pos, mouse_down_key)
 
         window.screen.fill((0, 0, 0))

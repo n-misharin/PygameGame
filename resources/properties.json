@@ -33,9 +33,9 @@
       "cost": 40,
       "sprite": {
         "name": ["red_worker.png", "blue_worker.png", "green_worker.png", "white_worker.png"],
-        "size": [512, 64],
+        "size": [512, 128],
         "column": 8,
-        "row": 1,
+        "row": 2,
         "pos": [0, 0]
       }
     },
@@ -52,9 +52,9 @@
       "cost": 50,
       "sprite": {
         "name": ["red_worker.png", "blue_worker.png", "green_worker.png", "white_worker.png"],
-        "size": [512, 64],
+        "size": [512, 128],
         "column": 8,
-        "row": 1,
+        "row": 2,
         "pos": [0, 0]
       }
     },
@@ -71,9 +71,9 @@
       "cost": 30,
       "sprite": {
         "name": ["red_worker.png", "blue_worker.png", "green_worker.png", "white_worker.png"],
-        "size": [512, 64],
+        "size": [512, 128],
         "column": 8,
-        "row": 1,
+        "row": 2,
         "pos": [0, 0]
       }
     },
@@ -90,9 +90,9 @@
       "cost": 60,
       "sprite": {
         "name": ["red_worker.png", "blue_worker.png", "green_worker.png", "white_worker.png"],
-        "size": [512, 64],
+        "size": [512, 128],
         "column": 8,
-        "row": 1,
+        "row": 2,
         "pos": [0, 0]
       }
     }

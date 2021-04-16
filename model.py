@@ -29,8 +29,8 @@ class Unit:
         self.view = views.UnitView(self)
 
     def is_can_move(self, new_position):
-        return abs(new_position[0] - self.position[0]) + abs(
-            new_position[1] - self.position[1]) == 1 and self.current_speed > 0
+        dist = abs(new_position[0] - self.position[0])+ abs(new_position[1] - self.position[1])
+        return dist == 1 and self.current_speed > 0
 
     def move(self, new_position, game_board):
         game_board.move_unit(self, new_position)
@@ -54,10 +54,12 @@ class Field:
             raise Exception("Клетка занята")
         else:
             self.units.append(unit)
+            self.view.refresh_unit_rect()
 
     def remove_unit(self, unit):
         if unit in self.units:
             self.units.remove(unit)
+            self.view.refresh_unit_rect()
         else:
             raise Exception("Ошибка")
 
@@ -113,8 +115,9 @@ class Board:
             new_field = self.get_field(new_position)
             old_field = self.get_field(unit.position)
             if not new_field.is_busy():
-                old_field.remove_unit(unit)
+                unit.position = new_position
                 new_field.add_unit(unit)
+                old_field.remove_unit(unit)
 
     @staticmethod
     def get_random(board_size):
