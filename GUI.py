@@ -6,7 +6,7 @@ import graphics
 
 
 class Label(pygame_gui.elements.UILabel):
-    HEIGHT = 24
+    HEIGHT = 26
     FONT_SIZE = 3.0
 
     def __init__(self, parent, rect, text="", width=0):
@@ -90,6 +90,41 @@ class InfoPanel(pygame_gui.elements.UIPanel):
         self.ui_group.add(self.labels[key])
 
 
+class UpPanel(pygame_gui.elements.UIPanel):
+    HEIGHT = 40
+    PADDING = 10
+
+    def __init__(self, manager, player, position=(0, 0)):
+        self.player = player
+        self.manager = manager
+        rect = pygame.rect.Rect(position[0], position[1],
+                                graphics.window.width - InfoPanel.WIDTH, self.HEIGHT)
+        super().__init__(
+            relative_rect=rect,
+            starting_layer_height=0,
+            manager=self.manager
+        )
+        lbl1 = Label(
+                self,
+                pygame.rect.Rect(rect.x + self.PADDING,
+                                 rect.y + 2 * self.PADDING // 3,
+                                 60,
+                                 Label.HEIGHT),
+                "Ходит:")
+        lbl2 = Label(
+            self,
+            pygame.rect.Rect(rect.x + self.PADDING * 2 + lbl1.rect.width,
+                             rect.y + 2 * self.PADDING // 3,
+                             200,
+                             Label.HEIGHT),
+            "Ходит")
+        self.labels = [lbl1, lbl2]
+        lbl2.set_text_color(self.player.view.color)
+        lbl2.bg_colour = pygame.color.Color(0, 0, 0)
+        lbl2.set_text(self.player.name)
+
+
+
 class ResourcesPanel(InfoPanel):
     LABELS_COUNT = 3
 
@@ -100,13 +135,21 @@ class ResourcesPanel(InfoPanel):
         self.add_label(properties.RESOURCES[1]["name"], properties.RESOURCES[1]["visible_name"], "-")
         self.add_label(properties.RESOURCES[2]["name"], properties.RESOURCES[2]["visible_name"], "-")
 
+        btn_rect = pygame.rect.Rect(
+            self.rect.x,
+            self.rect.y + 2 * self.PADDING + Label.HEIGHT * len(self.labels.values()),
+            self.rect.width,
+            Label.HEIGHT * 1.7)
+        self.button = pygame_gui.elements.UIButton(
+            relative_rect=btn_rect,
+            text="Закончить ход",
+            manager=self.manager
+        )
+
     def set_res(self, player):
         self.labels[properties.RESOURCES[0]["name"]][1].set_text(str(player.resources[0]))
         self.labels[properties.RESOURCES[1]["name"]][1].set_text(str(player.resources[1]))
         self.labels[properties.RESOURCES[2]["name"]][1].set_text(str(player.resources[2]))
-
-    def set_back_color(self, color):
-        self.background_colour = color
 
 
 class UnitInfoPanel(InfoPanel):
@@ -200,6 +243,9 @@ class GameGUI:
         self.field_panel = FieldInfoPanel(self.manager, position)
         pos = position[0], self.field_panel.get_bottom()
         self.res_panel = ResourcesPanel(self.manager, pos)
+        self.res_panel.set_res(self.player)
+
+        self.up_panel = UpPanel(self.manager, player)
 
     def update(self, delta_time):
         self.manager.update(delta_time)

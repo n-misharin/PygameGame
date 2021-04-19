@@ -3,7 +3,6 @@ from graphics import window, ImageHandler
 from model import Board, Unit, Player, Game
 from views import FieldView, BoardView, Camera
 from controller import KeyController
-import pygame_gui
 from GUI import GameGUI
 
 
@@ -19,7 +18,7 @@ if __name__ == '__main__':
     key_controller = KeyController()
     # game.board.get_field((0, 5)).units[0].view.move_towards((94 + 20, 5 * 94 - 30))
 
-    panel = GameGUI(position=(window.width - 250, 0), player=game.players[3])
+    panel = GameGUI(position=(window.width - 250, 0), player=game.players[0])
 
     while key_controller.running:
         delta_time = clock.tick(60) / 1000
