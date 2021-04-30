@@ -165,9 +165,10 @@ class ButtonsPanel(pygame_gui.elements.UIPanel):
                 self.rect.width - self.PADDING * 2,
                 self.BUTTON_SIZE_H),
             text="Закончить ход",
-            manager=self.manager
+            manager=self.manager,
         )
-        self.turn_button.disable()
+        #self.turn_button.disable()
+        #print(self.turn_button.pressed)
 
     def _add_button(self, text=""):
         btn_cnt = len(self.buttons)
@@ -283,6 +284,8 @@ class GameGUI:
 
     def update(self, delta_time):
         self.manager.update(delta_time)
+        if self.res_panel.turn_button.pressed:
+            print(1)
 
     def process_events(self, event):
         self.manager.process_events(event)
